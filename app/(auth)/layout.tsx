@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import '../globals.css';
 
 export const metadata = {
-    title: 'strings',
+    title: 'Strings',
     description: 'A Next.js 13 clone of Instagram Threads'
 }
 

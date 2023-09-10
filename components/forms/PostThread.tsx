@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
-    FormDescription,
     FormItem,
     FormField,
     FormLabel,
@@ -15,7 +14,9 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from "@/components/ui/textarea";
 import { usePathname, useRouter } from 'next/navigation';
-import { StringValidation } from "@/lib/validations/string";
+import { ThreadValidation } from "@/lib/validations/thread";
+import { createThread } from '@/lib/actions/thread.actions';
+import { getRandomValues } from 'crypto';
 // import { updateUser } from "@/lib/actions/user.actions";
 
 interface Props {
@@ -30,19 +31,28 @@ interface Props {
     btnTitle: string;
 }
 
-function PostString({ userId }: { userId: string }) {
+function PostThread({ userId }: { userId: string }) {
     const router = useRouter();
     const { pathname } = usePathname();
 
     const form = useForm({
-        resolver: zodResolver(StringValidation),
+        resolver: zodResolver(ThreadValidation),
         defaultValues: {
-            string: '',
+            thread: '',
             accountId: userId
         }
     })
 
-    const onSubmit = () => {};
+    const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+        await createThread({
+            text: values.thread,
+            author: userId,
+            communityId: null,
+            path: pathname
+        });
+
+        router.push('/');
+    };
 
     return (
         
@@ -53,7 +63,7 @@ function PostString({ userId }: { userId: string }) {
         
                 <FormField
                     control={form.control}
-                    name="string"
+                    name="thread"
                     render={({ field }) => (
                         <FormItem className='flex flex-col gap-3 w-full'>
                             <FormLabel className="text-base-semibold text-light-2">
@@ -79,4 +89,4 @@ function PostString({ userId }: { userId: string }) {
     )
 }
 
-export default PostString;
+export default PostThread;

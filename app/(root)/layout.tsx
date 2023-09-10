@@ -9,7 +9,7 @@ import Bottombar from '@/components/shared/Bottombar'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-    title: 'strings',
+    title: 'Strings',
     description: 'A Next.js 13 clone of Instagram Threads'
 }
 
